@@ -1,4 +1,46 @@
-nav ul li {
-    display: inline;
+*{font-family: 'Helvetica', sans-serif;}
+
+header h1 {
+    background-color: black;
+    color: salmon;
+    font-family: 'Righteous', cursive;
+    text-align: center;
+    padding: 1em 0;
 }
 
+.image-container {
+    text-align: center; /* Center the content horizontally */
+}
+
+
+h2 {font-family: 'Righteous' , cursive;
+
+}
+
+nav.top {
+    background-color: salmon; /* Set background color on the nav element */
+}
+
+nav.top ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+nav.top ul li {
+    display: inline-block;
+    padding: 1em 0;
+    margin-right: 20px; /* Adjust as needed for spacing between items */
+}
+
+nav.top ul li:last-child {
+    margin-right: 0; /* Remove margin from last item */
+}
+
+footer {
+    background-color: lightgrey;
+    
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
