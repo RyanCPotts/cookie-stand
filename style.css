@@ -9,7 +9,8 @@ header h1 {
 }
 
 .image-container {
-    text-align: center; /* Center the content horizontally */
+    text: center; /* Center the content horizontally */
+
 }
 
 
