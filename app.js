@@ -1,121 +1,65 @@
 let hours = ["6am", "7am", "8am", "9am", "10am", "11am", "12pm", "1pm", "2pm", "3pm", "4pm", "5pm", "6pm", "7pm"];
 
-// Function to insert sales data into the specified location element
-function insertSalesData(location, salesData) {
-    const salesList = document.getElementById(`${location}-sales-list`);
-    if (salesList) {
-        // Clear any existing sales data
-        salesList.innerHTML = '';
-
-        // Iterate over the hours and insert sales data for each hour
-        for (let i = 0; i < hours.length; i++) {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${hours[i]}: ${salesData[i]} cookies`;
-            salesList.appendChild(listItem);
-        }
-    }
+// Constructor function for Store objects
+function Store(name, phone, address, minCustomers, maxCustomers, avgSale) {
+    this.name = name;
+    this.phone = phone;
+    this.address = address;
+    this.minCustomers = minCustomers;
+    this.maxCustomers = maxCustomers;
+    this.avgSale = avgSale;
+    this.cookiesSalesArray = [];
 }
 
-let seattleObject = {
-    name: 'Seattle',
-    phone: '123-456-7890',
-    address: '2901 3rd. Ave #300, Seattle, WA 98121',
-    minCustomers: 23,
-    maxCustomers: 65,
-    avgSale: 6.3,
-    cookiesSalesArray: [],
-    generateCookieSales: function () {
-        for (let i = 0; i < hours.length; i++) {
-            let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
-            let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
-            this.cookiesSalesArray.push(cookiesThisHour);
-            console.log(this.cookiesSalesArray);
-        }
+// Prototype method to generate cookie sales data for a store
+Store.prototype.generateCookieSales = function () {
+    for (let i = 0; i < hours.length; i++) {
+        let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
+        let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
+        this.cookiesSalesArray.push(cookiesThisHour);
     }
 };
 
-let tokyoObject = {
-    name: "Tokyo",
-    phone: "222 - 222 - 2222",
-    address: '1 Main St. #1, Tokyo, Japan 035-894',
-    minCustomers: 3,
-    maxCustomers: 24,
-    avgSale: 1.2,
-    cookiesSalesArray: [],
-    generateCookieSales: function () {
-        for (let i = 0; i < hours.length; i++) {
-            let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
-            let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
-            this.cookiesSalesArray.push(cookiesThisHour);
-            console.log(this.cookiesSalesArray);
-        }
+// Create instances for each store
+let seattleStore = new Store('Seattle', '123-456-7890', '2901 3rd. Ave #300, Seattle, WA 98121', 23, 65, 6.3);
+let tokyoStore = new Store('Tokyo', '222-222-2222', '1 Main St. #1, Tokyo, Japan 035-894', 3, 24, 1.2);
+let dubaiStore = new Store('Dubai', '333-333-3333', 'PO BOX 123, Dubai, UAE', 11, 38, 3.7);
+let parisStore = new Store('Paris', '444-444-4444', 'PO Box 789, Paris, France', 20, 38, 2.3);
+let limaStore = new Store('Lima', '555-555-5555', 'PO Box 311, Lima Peru', 2, 16, 4.6);
+
+// Generate cookie sales data for each store
+seattleStore.generateCookieSales();
+tokyoStore.generateCookieSales();
+dubaiStore.generateCookieSales();
+parisStore.generateCookieSales();
+limaStore.generateCookieSales();
+
+// Function to generate the sales table HTML
+function generateSalesTable() {
+    let table = '<table><thead><tr><th>Location</th>'; // Start with Location header
+    for (let i = 0; i < hours.length; i++) {
+        table += `<th>${hours[i]}</th>`; // Add the times as headers
     }
-};
+    table += '</tr></thead><tbody>';
 
-let dubaiObject = {
-    name: "Dubai",
-    phone: "333 - 333 - 3333",
-    address: 'PO BOX 123, Dubai, UAE',
-    minCustomers: 11,
-    maxCustomers: 38,
-    avgSale: 3.7,
-    cookiesSalesArray: [],
-    generateCookieSales: function () {
-        for (let i = 0; i < hours.length; i++) {
-            let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
-            let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
-            this.cookiesSalesArray.push(cookiesThisHour);
-            console.log(this.cookiesSalesArray);
+    // Iterate over the stores to populate the rows
+    let stores = [seattleStore, tokyoStore, dubaiStore, parisStore, limaStore];
+    for (let j = 0; j < stores.length; j++) {
+        table += `<tr><td>${stores[j].name}</td>`; // Add location name in the first column
+        for (let k = 0; k < hours.length; k++) {
+            table += `<td>${stores[j].cookiesSalesArray[k]}</td>`; // Add sales data for each hour
         }
+        table += '</tr>';
     }
-};
+    
+    table += '</tbody></table>';
+    return table;
+}
 
-let parisObject = {
-    name: "Paris",
-    phone: "444 - 444 - 4444",
-    address: 'PO Box 789, Paris, France',
-    minCustomers: 20,
-    maxCustomers: 38,
-    avgSale: 2.3,
-    cookiesSalesArray: [],
-    generateCookieSales: function () {
-        for (let i = 0; i < hours.length; i++) {
-            let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
-            let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
-            this.cookiesSalesArray.push(cookiesThisHour);
-            console.log(this.cookiesSalesArray);
-        }
-    }
-};
+// Get the table body element
+let tableBody = document.querySelector('#sales-table tbody');
 
-let limaObject = {
-    name: "Lima",
-    phone: "555 - 555 - 5555",
-    address: 'PO Box 311, Lima Peru',
-    minCustomers: 2,
-    maxCustomers: 16,
-    avgSale: 4.6,
-    cookiesSalesArray: [],
-    generateCookieSales: function () {
-        for (let i = 0; i < hours.length; i++) {
-            let randCustomers = Math.floor(Math.random() * (this.maxCustomers - this.minCustomers + 1) + this.minCustomers);
-            let cookiesThisHour = Math.floor(randCustomers * this.avgSale);
-            this.cookiesSalesArray.push(cookiesThisHour);
-            console.log(this.cookiesSalesArray);
-        }
-    }
-};
-
-// Call generateCookieSales for each location
-seattleObject.generateCookieSales();
-tokyoObject.generateCookieSales();
-dubaiObject.generateCookieSales();
-parisObject.generateCookieSales();
-limaObject.generateCookieSales();
-
-// Call insertSalesData after generating sales data for each location
-insertSalesData("seattle", seattleObject.cookiesSalesArray);
-insertSalesData("tokyo", tokyoObject.cookiesSalesArray);
-insertSalesData("dubai", dubaiObject.cookiesSalesArray);
-insertSalesData("paris", parisObject.cookiesSalesArray);
-insertSalesData("lima", limaObject.cookiesSalesArray);
+// Insert the generated sales table HTML into the table body
+if (tableBody) {
+    tableBody.innerHTML = generateSalesTable();
+}

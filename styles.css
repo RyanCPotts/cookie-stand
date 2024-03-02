@@ -45,3 +45,19 @@ footer {
     font-weight: bold;
     text-align: center;
 }
+
+/* Add 2px border to all table cells */
+#sales-table td,
+#sales-table th {
+    border: 2px solid black;
+}
+
+/* Set background color for top row */
+#sales-table thead th {
+    background-color: lightgrey;
+}
+
+/* Set background color for left column */
+#sales-table tbody th {
+    background-color: lightgrey;
+}
