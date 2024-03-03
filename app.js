@@ -34,32 +34,46 @@ dubaiStore.generateCookieSales();
 parisStore.generateCookieSales();
 limaStore.generateCookieSales();
 
-// Function to generate the sales table HTML
+// Generate sales table including "Total" row
 function generateSalesTable() {
-    let table = '<table><thead><tr><th>Location</th>'; // Start with Location header
-    for (let i = 0; i < hours.length; i++) {
-        table += `<th>${hours[i]}</th>`; // Add the times as headers
+    let table = '<table id="sales-table">';
+    table += '<thead><tr><th>Location</th>';
+
+    // Add hour headers
+    for (let hour of hours) {
+        table += `<th>${hour}</th>`;
     }
-    table += '</tr></thead><tbody>';
+
+    table += '<th>Total</th></tr></thead><tbody>';
 
     // Iterate over the stores to populate the rows
     let stores = [seattleStore, tokyoStore, dubaiStore, parisStore, limaStore];
-    for (let j = 0; j < stores.length; j++) {
-        table += `<tr><td>${stores[j].name}</td>`; // Add location name in the first column
-        for (let k = 0; k < hours.length; k++) {
-            table += `<td>${stores[j].cookiesSalesArray[k]}</td>`; // Add sales data for each hour
+    let hourlyTotals = new Array(hours.length).fill(0); // Array to store hourly totals
+    let grandTotal = 0; // Variable to store the grand total
+    for (let store of stores) {
+        table += `<tr><td>${store.name}</td>`; // Add location name in the first column
+        let totalSales = 0;
+        for (let i = 0; i < store.cookiesSalesArray.length; i++) {
+            let cookiesSold = store.cookiesSalesArray[i];
+            table += `<td>${cookiesSold}</td>`; // Add sales data for each hour
+            totalSales += cookiesSold;
+            hourlyTotals[i] += cookiesSold; // Update hourly total
         }
-        table += '</tr>';
+        table += `<td>${totalSales}</td></tr>`; // Add total sales for the location
+        grandTotal += totalSales; // Update grand total
     }
-    
+
+    // Add "Total" row for hourly totals
+    table += '<tr><td>Total</td>';
+    for (let total of hourlyTotals) {
+        table += `<td>${total}</td>`;
+    }
+    table += `<td>${grandTotal}</td></tr>`; // Add grand total cell
+
     table += '</tbody></table>';
     return table;
 }
 
-// Get the table body element
-let tableBody = document.querySelector('#sales-table tbody');
-
-// Insert the generated sales table HTML into the table body
-if (tableBody) {
-    tableBody.innerHTML = generateSalesTable();
-}
+// Replace existing table with new sales table
+let salesTable = generateSalesTable();
+document.getElementById('sales-table-container').innerHTML = salesTable;
