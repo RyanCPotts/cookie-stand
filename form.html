@@ -1,34 +1,83 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Salmon Cookies Form</title>
     <link rel="stylesheet" type="text/css" href="css/reset.css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
-  <body>
+</head>
+<body>
     <header>
-      <h1>Salmon Cookies Form</h1>
-      <nav class="top">
-        <ul>
-            <li><a href="./index.html" title="Home Page">Home</a></li>
-            <li><a href="./sales.html" title="Sales Data">Sales</a></li>
-            <li><a href="./form.html" title="Complete The Following Form">Form</a></li>
-        </ul>
-    </nav>
+        <h1>Salmon Cookies Form</h1>
+        <nav class="top">
+            <ul>
+                <li><a href="./index.html" title="Home Page">Home</a></li>
+                <li><a href="./sales.html" title="Sales Data">Sales</a></li>
+                <li><a href="./form.html" title="Complete The Following Form">Form</a></li>
+            </ul>
+        </nav>
     </header>
     <main>
-      <h2>New Store Information Form</h2>
-      <form id="storeForm">
-        <input type="text" name="name" placeholder="Store Name" />
-        <input type="text" name="phone" placeholder="Phone Number" />
-        <input type="text" name="address" placeholder="Address" />
-        <input type="number" name="minCustomers" placeholder="Minimum Customers" />
-        <input type="number" name="maxCustomers" placeholder="Maximum Customers" />
-        <input type="number" name="avgSale" placeholder="Average Sale" />
-        <button type="submit">Add Store</button>
-      </form>
+        <h2>New Store Information Form</h2>
+        <form id="storeForm">
+            <input type="text" name="name" placeholder="Store Name" required />
+            <input type="text" name="phone" placeholder="Phone Number" required />
+            <input type="text" name="address" placeholder="Address" required />
+            <input type="number" name="minCustomers" placeholder="Minimum Customers" required />
+            <input type="number" name="maxCustomers" placeholder="Maximum Customers" required />
+            <input type="number" name="avgSale" placeholder="Average Sale" step="0.01" required />
+            <button type="submit">Add Store</button>
+        </form>
     </main>
     <script src="app.js"></script>
-    <script src="app.js"></script>
-  </body>
+    <script>
+        // Capture Form Data and Handle Form Submission
+        const form = document.getElementById('storeForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission from refreshing the page
+
+            const formData = new FormData(form);
+            const storeData = Object.fromEntries(formData.entries());
+
+            // Create a New Store Object
+            const newStore = new Store(
+                storeData.name,
+                storeData.phone,
+                storeData.address,
+                parseInt(storeData.minCustomers),
+                parseInt(storeData.maxCustomers),
+                parseFloat(storeData.avgSale)
+            );
+
+            // Update Home Page
+            updateHomePage(newStore);
+
+            // Update Sales Table
+            updateSalesTable(newStore);
+
+            // Optional: Clear form fields after submission
+            form.reset();
+        });
+
+        // Function to update the home page with information about the new store
+        function updateHomePage(store) {
+            // Update HTML elements with information about the new store
+            // For example, create new <div> elements with store details and append them to the appropriate section of the home page
+        }
+
+        // Function to update the sales table with sales numbers for the new store
+        function updateSalesTable(store) {
+            // Assuming you have a reference to the sales table element
+            const salesTable = document.getElementById('sales-table');
+
+            // Create a new row for the new store
+            const newRow = salesTable.insertRow(-1);
+
+            // Insert cells for each column (hours)
+            for (let i = 0; i < hours.length; i++) {
+                const cell = newRow.insertCell(i);
+                cell.textContent = store.cookiesSalesArray[i]; // Assuming cookiesSalesArray contains sales data for each hour
+            }
+        }
+    </script>
+</body>
 </html>
